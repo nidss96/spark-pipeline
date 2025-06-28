@@ -1,3 +1,4 @@
+# NYC Taxi Trip Data Pipeline with PySpark
 
 This project supports running a PySpark job in three different modes depending on the execution environment and scale:
 
@@ -13,7 +14,7 @@ This project supports running a PySpark job in three different modes depending o
 ## Spark Job and Output
 - A PySpark job is used to merge the yellow and green datasets, compute monthly aggregates like revenue, passenger count and trip distance, and output the results to:
 -  Local disk (for local/standalone runs) in `data/report`.
--  Google Cloud Storage (GCS) or BigQuery (for Dataproc runs)  
+-  Google Cloud Storage (GCS) or BigQuery ( scalable clusters using Dataproc)  
 
 Below are instructions for running the pipeline in each mode:
 
