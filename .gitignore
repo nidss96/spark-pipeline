@@ -1,5 +1,5 @@
 # Ignore all data files
-data/
+data_old/
 
 # Ignore Python virtual env
 .venv_nyc/
