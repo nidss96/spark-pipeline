@@ -74,7 +74,13 @@ spark-submit \
 
 ### 3b. Write results to BigQuery
 
-We can do this by just changing the `output` argument.
+First, change the `output` argument in the script, and set the `temporaryGcsBucket`, created when making the GCS bucket:
+Nxt, upload the `.py` script to GCS:
+
+```
+gsutil -m cp -r generate_report_dataproc_cluster_to_Big_Query.py gs://data_lake_de_bucket/generate_report_dataproc_cluster_to_Big_Query.py
+```
+And run thr command below:
 
 Using google cloud sdk:
 ```
