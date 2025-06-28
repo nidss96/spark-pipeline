@@ -16,7 +16,7 @@ This project supports running a PySpark job in three different modes depending o
 -  Local disk (for local/standalone runs) in `data/report`.
 -  Google Cloud Storage (GCS) or BigQuery ( scalable clusters using Dataproc)  
 
-Below are instructions for running the pipeline in each mode:
+Below are instructions for running the pipeline in each mode via CLI:
 
 ## 1. Spark local mode
 
