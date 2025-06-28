@@ -86,7 +86,7 @@ df_trips_data.registerTempTable('trips_data')
 df_result = spark.sql("""
 SELECT 
     -- Revenue grouping 
-    --PULocationID AS revenue_zone,
+    PULocationID AS revenue_zone,
     date_format(pickup_datetime, 'MMM') AS month, 
     service_type, 
     
