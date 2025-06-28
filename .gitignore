@@ -1,0 +1,12 @@
+# Ignore all data files
+data/
+
+# Ignore Python virtual env
+.venv_nyc/
+
+# Ignore notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore compiled Python files
+__pycache__/
+*.pyc
