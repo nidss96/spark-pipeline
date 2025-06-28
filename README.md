@@ -1,42 +1,55 @@
 
-Spark local mode
+This project supports running a PySpark job in three different modes depending on the execution environment and scale:
+
+- **Local Mode** – for quick testing and development on a single machine
+- **Standalone Spark Cluster** – for distributed processing using a manually configured Spark cluster
+- **Google Cloud Dataproc Cluster** – for fully managed Spark jobs using GCP infrastructure, with support for writing output to GCS or BigQuery
+
+## Input Data and Processing
+- Input Data: Raw Parquet files for yellow and green NYC taxi trips, downloaded from [NYC TLC Trip Record Data](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page).
+- Use the provided `download_data.sh` script to download raw data files from the NYC TLC website and save to `data/raw/`.
+- `notebooks/exploratory.ipynb` was used to standardize the schema and save to `data/pq/`.
+
+## Spark Job and Output
+- A PySpark job is used to merge the yellow and green datasets, compute monthly aggregates like revenue, passenger count and trip distance, and output the results to:
+-  Local disk (for local/standalone runs) in `data/report`.
+-  Google Cloud Storage (GCS) or BigQuery (for Dataproc runs)  
+
+Below are instructions for running the pipeline in each mode:
+
+## 1. Spark local mode
+
+```
 python spark_job/generate_report_local.py \
  --input_green=data/pq/green/2024/*/ \
  --input_yellow=data/pq/yellow/2024/*/* \
  --output=data/report/2024
+```
 
 
-
-Standalone Spark Cluster
-Use spark-submit for running the script on the cluster
+## 2. Standalone Spark Cluster
+Use `spark-submit` for running the script on the cluster
 
 URL="spark://de-vm.asia-south1-c.c.velvety-tangent-463717-h8.internal:7077"
 
+```
 spark-submit \
     --master="${URL}" \
     spark_job/generate_report_standalone_cluster.py \
     --input_green=data/pq/green/2024/*/ \
     --input_yellow=data/pq/yellow/2024/*/* \
     --output=data/report/2024
+```
 
+## 3. Dataproc Cluster
+We can submit job through dataproc cluster
 
+Here, we first get data from GCS. After processing it, we have 2 options to store it:
 
+### 3a. Store it back in GCS
 
-submitting job through dataproc cluster
-here we are getting data from GCS, processing it and storing in GCS
-
-using web UI
-spark-submit \
-    --master="${URL}" \
-    spark_job_generate_report.py \
-    --input_green=gs://data_lake_de_bucket/pq/green/2024/*/ \
-    --input_yellow=gs://data_lake_de_bucket/pq/yellow/2024/*/* \
-    --output=gs://data_lake_de_bucket/report/2024
-
-using rest api
-
-
-Using google cloud sdk 
+Using google cloud sdk:
+```
 gcloud dataproc jobs submit pyspark \
     --cluster=de-cluster \
     --region=asia-south1 \
@@ -45,10 +58,25 @@ gcloud dataproc jobs submit pyspark \
     --input_green=gs://data_lake_de_bucket/pq/green/2024/* \
     --input_yellow=gs://data_lake_de_bucket/pq/yellow/2024/* \
     --output=gs://data_lake_de_bucket/report-2024
+```
+We can also do it using using using Rest API and the web UI.
 
+using Web UI:
+```
+spark-submit \
+    --master="${URL}" \
+    spark_job_generate_report.py \
+    --input_green=gs://data_lake_de_bucket/pq/green/2024/*/ \
+    --input_yellow=gs://data_lake_de_bucket/pq/yellow/2024/*/* \
+    --output=gs://data_lake_de_bucket/report/2024
+```
 
-writing to bigquery - we just need to change the output
-Using google cloud sdk 
+### 3b. Write results to BigQuery
+
+We can do this by just changing the `output` argument.
+
+Using google cloud sdk:
+```
 gcloud dataproc jobs submit pyspark \
      --cluster=de-cluster \
      --region=asia-south1 \
@@ -57,3 +85,6 @@ gcloud dataproc jobs submit pyspark \
      --input_green=gs://data_lake_de_bucket/pq/green/2024/* \
      --input_yellow=gs://data_lake_de_bucket/pq/yellow/2024/* \
      --output=trips_data_all.report-2024
+```
+
+  
