@@ -72,7 +72,7 @@ spark-submit \
     --output=gs://data_lake_de_bucket/report/2024
 ```
 
-### 3b. Write results to BigQuery
+### 3b. Write results to BigQuery (From Data Lake to Data Warehouse)
 
 First, change the `output` argument in the script, and set the `temporaryGcsBucket`, created when making the GCS bucket:
 Nxt, upload the `.py` script to GCS:
