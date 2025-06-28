@@ -85,12 +85,14 @@ df_trips_data.registerTempTable('trips_data')
 
 df_result = spark.sql("""
 SELECT 
-    -- Reveneue grouping 
-    PULocationID AS revenue_zone,
-    date_trunc('month', pickup_datetime) AS revenue_month, 
+    -- Revenue grouping 
+    --PULocationID AS revenue_zone,
+    date_format(pickup_datetime, 'MMM') AS month, 
     service_type, 
-
-    -- Revenue calculation 
+    
+    count(*) total_trips,
+    
+     -- Revenue calculation 
     SUM(fare_amount) AS revenue_monthly_fare,
     SUM(extra) AS revenue_monthly_extra,
     SUM(mta_tax) AS revenue_monthly_mta_tax,
@@ -101,8 +103,8 @@ SELECT
     SUM(congestion_surcharge) AS revenue_monthly_congestion_surcharge,
 
     -- Additional calculations
-    AVG(passenger_count) AS avg_montly_passenger_count,
-    AVG(trip_distance) AS avg_montly_trip_distance
+    AVG(passenger_count) AS avg_monthly_passenger_count,
+    AVG(trip_distance) AS avg_monthly_trip_distance
 FROM
     trips_data
 GROUP BY
@@ -112,5 +114,6 @@ GROUP BY
 log.info(f"Writing output to: {output}")
 df_result.write.format('bigquery') \
     .option('table', output) \
+    .mode('overwrite') \
     .save()
 log.info("Spark job completed successfully.")
