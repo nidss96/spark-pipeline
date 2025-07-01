@@ -14,7 +14,10 @@ This project supports running a PySpark job in three different modes depending o
 ## Spark Job and Output
 - A PySpark job is used to merge the yellow and green datasets, compute monthly aggregates like revenue, passenger count and trip distance, and output the results to:
 -  Local disk (for local/standalone runs) in `data/report`.
--  Google Cloud Storage (GCS) or BigQuery ( scalable clusters using Dataproc)  
+-  Google Cloud Storage (GCS) or BigQuery (scalable clusters using Dataproc)
+
+## Dashboard and reporting
+- Google Looker Studio is used to build a dashboard based on the monthly aggregated stats saved to BigQuery via Dataproc.
 
 Below are instructions for running the pipeline in each mode via CLI:
 
@@ -94,4 +97,11 @@ gcloud dataproc jobs submit pyspark \
      --output=trips_data_all.report-2024
 ```
 
-  
+## Interactive Dashboard & Key Insights
+Once the aggregated output is written to BigQuery, Looker Studio is used as the final reporting layer to enable business-friendly visualization and exploration.
+The visualization highlights seasonality, trip distribution, and revenue patterns between yellow and green taxis.
+
+<p align="center">
+<img src="looker_studio_reporting_1.png" alt="Dashboard Preview" width="800"/>
+<img src="looker_studio_reporting_2.png" alt="Dashboard Preview" width="800"/>
+<p align="center">
