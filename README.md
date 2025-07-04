@@ -12,7 +12,7 @@ This project supports running a PySpark job in three different modes depending o
 - `notebooks/exploratory.ipynb` was used to standardize the schema and save to `data/pq/`.
 
 ## Spark Job and Output
-- A PySpark job is used to merge the yellow and green datasets, compute monthly aggregates like revenue, passenger count and trip distance, and output the results to:
+A PySpark job is used to merge the yellow and green datasets, compute monthly aggregates like revenue, passenger count and trip distance, and output the results to:
 -  Local disk (for local/standalone runs) in `data/report`.
 -  Google Cloud Storage (GCS) or BigQuery (scalable clusters using Dataproc)
 
