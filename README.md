@@ -2,9 +2,23 @@
 
 This project supports running a PySpark job in three different modes depending on the execution environment and scale:
 
-- **Local Mode** – for quick testing and development on a single machine
-- **Standalone Spark Cluster** – for distributed processing using a manually configured Spark cluster
-- **Google Cloud Dataproc Cluster** – for fully managed Spark jobs using GCP infrastructure, with support for writing output to GCS or BigQuery
+- **Local Mode**: for quick testing and development on a single machine
+- **Standalone Spark Cluster**: for distributed processing using a manually configured Spark cluster
+- **Google Cloud Dataproc Cluster**: for fully managed Spark jobs using GCP infrastructure, with support for writing output to GCS or BigQuery
+
+## Environment Setup (GCP VM)
+
+This project was developed on a Google Cloud VM instance running Ubuntu 22.04.
+
+### Installed Tools
+- Python 3.10+
+- Apache Spark 3.x
+- Java 11 (spark requires 8 or 11)
+- Git
+- gsutil (Google Cloud SDK)
+- gcloud CLI (for Dataproc & BigQuery jobs)
+- Jupyter Notebook
+- `venv` to manage virtual environment and dependencies
 
 ## Input Data and Processing
 - Input Data: Raw Parquet files for yellow and green NYC taxi trips, downloaded from [NYC TLC Trip Record Data](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page).
@@ -16,7 +30,7 @@ A PySpark job is used to merge the yellow and green datasets, compute monthly ag
 -  Local disk (for local/standalone runs) in `data/report`.
 -  Google Cloud Storage (GCS) or BigQuery (scalable clusters using Dataproc)
 
-## Dashboard and reporting
+## Dashboard and Analysis
 - Google Looker Studio is used to build a dashboard based on the monthly aggregated stats saved to BigQuery via Dataproc.
 
 Below are instructions for running the pipeline in each mode via CLI:
@@ -78,7 +92,7 @@ spark-submit \
 ### 3b. Write results to BigQuery (From Data Lake to Data Warehouse)
 
 First, change the `output` argument in the script, and set the `temporaryGcsBucket`, created when making the GCS bucket:
-Nxt, upload the `.py` script to GCS:
+Next, upload the `.py` script to GCS:
 
 ```
 gsutil -m cp -r generate_report_dataproc_cluster_to_Big_Query.py gs://data_lake_de_bucket/generate_report_dataproc_cluster_to_Big_Query.py
